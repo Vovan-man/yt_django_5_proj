@@ -1,19 +1,38 @@
+{% extends "myapp/base.html" %}
 {% load static %}
-<html>
-    <head>
-         <link rel="stylesheet" href="{% static 'myapp/styles.css' %}">
-    </head>
-    <body class="bg-sky-500">
+
+{% block content %}
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between">
+                <div class="flex space-x-7">
+                    <div>
+                        <a href="#" class="flex items-center px-2 py-4">
+                        <img class="h-12 w-12" src="{% static 'myapp/images/shopping-cart.png' %}" alt="logo"/>
+                        <span class="text-gray-500 font-semibold text-3xl">Pro Shop</span>
+                        </a>
+                        
+                    </div>
+                    <div class="items-center flex space-x-1">
+                        <a href="#" class="py-4 px-2 text-xl font-semibold border-b-4 border-green-500">Home</a>
+                        <a href="#" class="py-4 px-2 text-xl font semibold" >About</a>
+                        <a href="#" class="py-4 px-2 text-xl font semibold" >Contacts</a>
+                        <a href="#" class="py-4 px-2 text-xl font semibold" >MyWorks</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
         
-        <h1> This is index template</h1>
         
-        <h2>
-            <!--a href="/myapp/hello/{{item.id}}/" -->
-            {% for item in items %}
-            <a href="{% url 'myapp:detail' item.id %}"> 
-            id:{{item.id}}  |  Модель: {{item.name}} |Цена: {{item.price}} | Описание:{{item.description}} *** <br/>
-            <a>
-            {% endfor %}
-        </h2>    
-    </body>
-</html>
+    <h2>
+        <!--a href="/myapp/hello/{{item.id}}/" -->
+        {% for item in items %}
+        <a href="{% url 'myapp:detail' item.id %}"> 
+        id:{{item.id}}  |  Модель: {{item.name}} |Цена: {{item.price}} | Описание:{{item.description}} *** <br/>
+        <a>
+        {% endfor %}
+    </h2> 
+    {% endblock content %}           
+    
