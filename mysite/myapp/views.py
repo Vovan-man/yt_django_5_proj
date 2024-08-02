@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Product
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -23,3 +24,42 @@ def indexItem(request, my_id):
 
 #def contacts(request):
    # return render(request, "myapp/contacts.html")         # HttpResponse("<h1>Это наши контакты:</h1>")
+
+@login_required
+def add_item(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        description = request.POST.get("description")
+        image = request.FILES['upload']
+        seller = request.user
+        item = Product(name=name, price=price, description=description, image=image, seller=seller)
+        item.save()
+        
+    
+    return render(request, "myapp/additem.html" )
+
+@login_required
+def update_item(request, my_id):
+    item = Product.objects.get(id=my_id)
+    if request.method == "POST":
+        item.name = request.POST.get("name")
+        item.price = request.POST.get("price")
+        item.description = request.POST.get("description")
+        item.image = request.FILES.get('upload', item.image)
+        
+        item.save()
+        return redirect("/myapp/")
+    context = {'item':item}
+    return render(request, "myapp/updateitem.html", context )
+
+@login_required
+def delete_item(request, my_id):
+    item = Product.objects.get(id=my_id)
+    if request.method == "POST":
+        item.delete()
+        return redirect("/myapp/")
+    context = {'item':item}
+    return render(request, "myapp/deleteitem.html", context )
+
+
